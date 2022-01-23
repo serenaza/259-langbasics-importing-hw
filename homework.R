@@ -3,6 +3,8 @@
 
 #List names of students collaborating with (no more than 2): 
 
+##Samyukta Jayakumar
+
 #GENERAL INFO 
 #data_A contains 12 files of data. 
 #Each file (6192_3.txt) notes the participant (6192) and block number (3)
@@ -18,6 +20,8 @@
 # Load the readr package
 
 # ANSWER
+install.packages("readr")
+library(readr)
 
 
 ### QUESTION 2 ----- 
@@ -29,7 +33,7 @@
 
 # ds1 should look like this:
 
-# # A tibble: 20 × 4
+# # A tibble: 20x4
 #  trial_num    speed_actual speed_response correct
 #   <dbl>       <chr>        <chr>          <lgl>  
 #     1          fas          slower         FALSE  
@@ -46,7 +50,15 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 # ANSWER
 
+ds1 <- read_tsv("6191_1.txt", col_names = col_names, skip = 7)
+View(ds1)
 
+##I also tried converting the .txt files to csv files. 
+ds1 <- read.csv("6191_1.csv", header = FALSE, col.names = c("trial_num","speed_actual",
+                                                         "speed_response","correct"))
+library(tibble)
+ds1 <- tibble(ds1)
+View(ds1)
 
 ### QUESTION 3 ----- 
 
@@ -55,6 +67,10 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # Then write the new data to a CSV file in the "data_cleaned" folder
 
 # ANSWER
+ds1$trial_num = 100:119
+View(ds1)
+setwd()
+write.csv(ds1, file = "6191_1_NewTrialNum.csv")
 
 
 ### QUESTION 4 ----- 
@@ -63,13 +79,18 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # Store it to a variable
 
 # ANSWER
-
+setwd()
+data_A <-list.files()
+AllFiles<-data_A
+print(AllFiles)
 
 ### QUESTION 5 ----- 
 
 # Read all of the files in data_A into a single tibble called ds
 
 # ANSWER
+setwd()
+ds <- read_tsv(AllFiles, col_names = col_names, skip =7)
 
 
 ### QUESTION 6 -----
@@ -84,6 +105,12 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 # ANSWER
 
+##Tried but could not figure it out. 
+setwd()
+ds_test <- read_tsv("6191_5.txt", col_names = col_names, skip =7)
+ds_test2 <- read_tsv(ds_test, col_types = list(col_integer(), col_character(), col_character(), col_logical()))
+ds_test$trial_num = 100:119
+?read_tsv
 
 ### QUESTION 7 -----
 
@@ -102,4 +129,12 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # There are two sheets of data -- import each one into a new tibble
 
 # ANSWER
-
+?readxl
+install.packages("readxl")
+library(readxl)
+setwd()
+excel_file <- read_xlsx("participant_info.xlsx")
+sheet1 <- read_xlsx("participant_info.xlsx", 1)
+sheet2 <- read_xlsx("participant_info.xlsx", 2)
+sheet1_tibble <- tibble(sheet1)
+sheet2_tibble <- tibble(sheet2)
